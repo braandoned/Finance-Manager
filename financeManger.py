@@ -91,12 +91,16 @@ def get_category(name):
 # Process transactions from a CSV file
 def process_file(file_name, process_function, file_type):
     transactions = []
+    skipFirst = 0
     with open(file_name, mode="r") as csv_file:
-        csv_reader = csv.reader(csv_file)
-        for row in csv_reader:
-            transaction = process_function(row, file_type)
-            if transaction:
-                transactions.append(transaction)
+        if skipFirst == 0:
+            skipFirst = 1
+        else:
+            csv_reader = csv.reader(csv_file)
+            for row in csv_reader:
+                transaction = process_function(row, file_type)
+                if transaction:
+                    transactions.append(transaction)
     return transactions
 
 # Insert transactions into a Google Sheets worksheet
